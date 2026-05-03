@@ -47,7 +47,12 @@
   <!-- Header -->
   <header class="admin-header">
     <img src="assets/logo.png" alt="" style="width:30px; height:30px; border-radius: 8px;" onerror="this.style.display='none'">
-    <div class="admin-header-title">⚡ Admin Dashboard</div>
+    <div class="admin-header-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      Admin Dashboard
+    </div>
     <button class="admin-logout" onclick="handleLogout()">Keluar</button>
   </header>
 
@@ -97,8 +102,13 @@
         </div>
         <input type="file" id="img-input" accept="image/*">
         <div class="upload-progress" id="upload-progress">
-          <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
-          <div class="progress-text" id="progress-text">Mengupload... 0%</div>
+          <div class="progress-text" id="progress-text" style="text-align:left;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span id="progress-status">Siap upload...</span>
+          </div>
         </div>
       </div>
 
@@ -160,7 +170,13 @@
 <div class="edit-modal" id="edit-modal">
   <div class="edit-modal-content">
     <div class="sheet-handle" style="margin: 0 auto 8px;"></div>
-    <div class="edit-modal-title">✏️ Edit Addon</div>
+    <div class="edit-modal-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      Edit Addon
+    </div>
 
     <div class="form-group">
       <label class="form-label">Judul</label>
@@ -180,7 +196,14 @@
     </div>
     <div style="display: flex; gap: 10px; margin-top: 8px;">
       <button class="btn btn-secondary" onclick="closeEditModal()" style="flex: 1; height: 50px;">Batal</button>
-      <button class="btn btn-primary" onclick="saveEdit()" style="flex: 2; height: 50px;">💾 Simpan</button>
+      <button class="btn btn-primary" onclick="saveEdit()" style="flex: 2; height: 50px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Simpan
+      </button>
     </div>
   </div>
 </div>
@@ -190,11 +213,14 @@
 
 <script type="module">
 import {
-  db, storage,
+  db,
   collection, addDoc, getDocs, doc, updateDoc, deleteDoc,
-  query, orderBy, serverTimestamp, onSnapshot,
-  ref, uploadBytesResumable, getDownloadURL, deleteObject
+  query, orderBy, serverTimestamp, increment
 } from './firebase.js';
+
+// ===== IMGBB CONFIG =====
+// Dapatkan API key gratis dari https://api.imgbb.com/
+const IMGBB_API_KEY = 'f9793114584c34b438a816cf1d94bac5'; // GANTI dengan API key kamu
 
 // ===== AUTH =====
 const ADMIN_USER = 'alfread';
@@ -221,7 +247,7 @@ window.handleLogin = function() {
     setTimeout(showDashboard, 400);
   } else {
     errEl.style.display = 'block';
-    errEl.textContent = '❌ Username atau password salah!';
+    errEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Username atau password salah!';
     document.getElementById('login-pass').value = '';
     setTimeout(() => errEl.style.display = 'none', 3000);
   }
@@ -251,7 +277,7 @@ function showToast(msg, type = 'info') {
   const tc = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.textContent = msg;
+  toast.innerHTML = msg;
   tc.appendChild(toast);
   setTimeout(() => {
     toast.classList.add('out');
@@ -259,8 +285,7 @@ function showToast(msg, type = 'info') {
   }, 3500);
 }
 
-// ===== IMAGE UPLOAD =====
-let uploadedImageUrl = '';
+// ===== IMAGE UPLOAD PREVIEW =====
 let selectedFile = null;
 
 const imgInput = document.getElementById('img-input');
@@ -271,40 +296,64 @@ imgInput?.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) {
-    showToast('Gambar terlalu besar! Maks 5MB', 'error'); return;
+    showToast('Gambar terlalu besar! Maks 5MB', 'error');
+    return;
   }
   selectedFile = file;
   const url = URL.createObjectURL(file);
   imgPreview.src = url;
   imgPreview.classList.add('visible');
   imgPlaceholder.classList.add('hidden');
-  showToast('Gambar dipilih. Siap upload!', 'info');
+  
+  document.getElementById('progress-status').textContent = 
+    `Gambar dipilih: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
 });
 
-async function uploadImage(file) {
+// ===== UPLOAD GAMBAR KE IMGBB =====
+async function uploadImageToImgBB(file) {
+  const progressStatus = document.getElementById('progress-status');
+  const progressWrap = document.getElementById('upload-progress');
+  
+  progressWrap.classList.add('active');
+  progressStatus.textContent = 'Mengupload gambar ke ImgBB...';
+  
+  // Convert file ke base64
+  const base64 = await convertToBase64(file);
+  
+  // Upload ke ImgBB
+  const formData = new FormData();
+  formData.append('image', base64.split(',')[1]); // Hapus prefix data:image/...
+  formData.append('key', IMGBB_API_KEY);
+  
+  try {
+    const response = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error(data.error?.message || 'Upload gagal');
+    }
+    
+    progressStatus.textContent = 'Upload berhasil! ✓';
+    progressWrap.classList.remove('active');
+    
+    return data.data.url;
+  } catch (err) {
+    progressStatus.textContent = 'Upload gagal! ❌';
+    progressWrap.classList.remove('active');
+    throw err;
+  }
+}
+
+function convertToBase64(file) {
   return new Promise((resolve, reject) => {
-    const name = `addons/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-    const storageRef = ref(storage, name);
-    const task = uploadBytesResumable(storageRef, file);
-
-    const progressWrap = document.getElementById('upload-progress');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    progressWrap.classList.add('active');
-
-    task.on('state_changed',
-      (snapshot) => {
-        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        progressBar.style.width = pct + '%';
-        progressText.textContent = `Mengupload gambar... ${pct}%`;
-      },
-      (err) => { progressWrap.classList.remove('active'); reject(err); },
-      async () => {
-        const url = await getDownloadURL(task.snapshot.ref);
-        progressWrap.classList.remove('active');
-        resolve(url);
-      }
-    );
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
@@ -320,18 +369,33 @@ window.handleUpload = async function() {
   if (!desc) { showToast('Deskripsi tidak boleh kosong!', 'error'); return; }
   if (!dl) { showToast('Link download tidak boleh kosong!', 'error'); return; }
   if (!selectedFile) { showToast('Pilih gambar dulu!', 'error'); return; }
+  
+  if (IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY_HERE') {
+    showToast('⚠️ Masukkan ImgBB API Key dulu! Dapatkan gratis di <a href="https://api.imgbb.com" target="_blank" style="color:inherit;">api.imgbb.com</a>', 'error');
+    return;
+  }
 
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div> Mengupload...';
 
   try {
-    const imageUrl = await uploadImage(selectedFile);
+    // Upload gambar ke ImgBB
+    const imageUrl = await uploadImageToImgBB(selectedFile);
+    
+    // Simpan ke Firestore
     await addDoc(collection(db, 'addons'), {
-      title, description: desc, downloadUrl: dl, donateUrl: donate || '',
-      imageUrl, likes: 0, views: 0, createdAt: serverTimestamp()
+      title,
+      description: desc,
+      downloadUrl: dl,
+      donateUrl: donate || '',
+      imageUrl,
+      likes: 0,
+      views: 0,
+      createdAt: serverTimestamp()
     });
 
     showToast('✅ Addon berhasil diupload!', 'success');
+    
     // Reset form
     document.getElementById('form-title').value = '';
     document.getElementById('form-desc').value = '';
@@ -341,8 +405,9 @@ window.handleUpload = async function() {
     imgPreview.classList.remove('visible');
     imgPlaceholder.classList.remove('hidden');
     selectedFile = null;
-    uploadedImageUrl = '';
     imgInput.value = '';
+    document.getElementById('progress-status').textContent = 'Siap upload...';
+    
     loadAdminAddons();
   } catch (err) {
     console.error(err);
@@ -365,6 +430,7 @@ let adminAddons = [];
 async function loadAdminAddons() {
   const listEl = document.getElementById('admin-addon-list');
   listEl.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text3); font-size:0.85rem;"><div class="spinner" style="margin:0 auto 12px;"></div>Memuat...</div>`;
+  
   try {
     const q = query(collection(db, 'addons'), orderBy('createdAt', 'desc'));
     const snap = await getDocs(q);
@@ -392,12 +458,20 @@ async function loadAdminAddons() {
         <div class="admin-addon-info">
           <div class="admin-addon-title">${escHtml(addon.title)}</div>
           <div class="admin-addon-date">
-            👁 ${addon.views || 0} · ❤️ ${addon.likes || 0}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="vertical-align: middle; margin-right: 3px;">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            ${addon.views || 0} · 
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="vertical-align: middle; margin: 0 3px;">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            ${addon.likes || 0}
           </div>
         </div>
         <div class="admin-addon-actions">
           <button class="btn btn-success" onclick="openEdit('${addon.id}')">Edit</button>
-          <button class="btn btn-danger" onclick="handleDelete('${addon.id}', '${escAttr(addon.imageUrl)}')">Hapus</button>
+          <button class="btn btn-danger" onclick="handleDelete('${addon.id}')">Hapus</button>
         </div>`;
       listEl.appendChild(item);
     });
@@ -453,18 +527,11 @@ document.getElementById('edit-modal')?.addEventListener('click', function(e) {
 });
 
 // ===== DELETE =====
-window.handleDelete = async function(id, imageUrl) {
-  if (!confirm('❗ Yakin hapus addon ini?\nTindakan ini tidak bisa dibatalkan.')) return;
+window.handleDelete = async function(id) {
+  if (!confirm('⚠️ Yakin hapus addon ini?\nTindakan ini tidak bisa dibatalkan.')) return;
   try {
     await deleteDoc(doc(db, 'addons', id));
-    // Try to delete image from storage
-    if (imageUrl && imageUrl.includes('firebase')) {
-      try {
-        const imgRef = ref(storage, imageUrl);
-        await deleteObject(imgRef);
-      } catch (_) {}
-    }
-    showToast('🗑️ Addon berhasil dihapus!', 'success');
+    showToast('✅ Addon berhasil dihapus!', 'success');
     loadAdminAddons();
   } catch (err) {
     showToast('❌ Gagal hapus: ' + err.message, 'error');
@@ -473,9 +540,6 @@ window.handleDelete = async function(id, imageUrl) {
 
 function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escAttr(str) {
-  return String(str || '').replace(/'/g, "\\'");
 }
 
 // ===== INIT =====
