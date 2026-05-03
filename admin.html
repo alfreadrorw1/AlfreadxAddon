@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin - Alfread X Addon</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <style>
+    body { padding-bottom: 32px !important; }
+    #bottom-nav { display: none !important; }
+  </style>
+</head>
+<body class="admin-body">
+
+<!-- ===== LOGIN ===== -->
+<div id="login-page" class="admin-login">
+  <div class="login-card fade-in">
+    <div class="login-logo">
+      <img src="assets/logo.png" alt="Logo" style="width:56px; height:56px; border-radius:14px; margin: 0 auto 12px; display:block;" onerror="this.style.display='none'">
+      <h2>Alfread <span>X</span> Admin</h2>
+      <p>Dashboard pengelola addon</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-input" id="login-user" placeholder="Masukkan username" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" id="login-pass" placeholder="Masukkan password" autocomplete="current-password">
+    </div>
+    <div id="login-error" style="color: var(--danger); font-size: 0.82rem; margin-bottom: 12px; display: none; text-align: center; font-weight: 600;"></div>
+    <button class="btn btn-primary" id="login-btn" style="width:100%; height:52px; font-size:0.95rem;" onclick="handleLogin()">
+      Masuk ke Dashboard
+    </button>
+    <div style="text-align: center; margin-top: 16px;">
+      <a href="index.html" style="font-size: 0.8rem; color: var(--text3);">← Kembali ke website</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard-page" style="display: none;">
+
+  <!-- Header -->
+  <header class="admin-header">
+    <img src="assets/logo.png" alt="" style="width:30px; height:30px; border-radius: 8px;" onerror="this.style.display='none'">
+    <div class="admin-header-title">⚡ Admin Dashboard</div>
+    <button class="admin-logout" onclick="handleLogout()">Keluar</button>
+  </header>
+
+  <div class="admin-content">
+
+    <!-- Stats Row -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px;">
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center;">
+        <div style="font-size: 1.4rem; font-weight: 800; color: var(--accent);" id="stat-total">0</div>
+        <div style="font-size: 0.7rem; color: var(--text3); margin-top: 2px; font-weight: 500;">Total Addon</div>
+      </div>
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center;">
+        <div style="font-size: 1.4rem; font-weight: 800; color: var(--success);" id="stat-views">0</div>
+        <div style="font-size: 0.7rem; color: var(--text3); margin-top: 2px; font-weight: 500;">Total Views</div>
+      </div>
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center;">
+        <div style="font-size: 1.4rem; font-weight: 800; color: var(--danger);" id="stat-likes">0</div>
+        <div style="font-size: 0.7rem; color: var(--text3); margin-top: 2px; font-weight: 500;">Total Likes</div>
+      </div>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload Addon Baru
+      </div>
+
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label class="form-label">Gambar Addon</label>
+        <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('img-input').click()">
+          <img id="img-preview" src="" alt="Preview">
+          <div class="img-upload-placeholder" id="img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Tap untuk pilih gambar</span>
+            <span style="font-size: 0.7rem; color: var(--text3);">JPG, PNG, WEBP — Max 5MB</span>
+          </div>
+        </div>
+        <input type="file" id="img-input" accept="image/*">
+        <div class="upload-progress" id="upload-progress">
+          <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+          <div class="progress-text" id="progress-text">Mengupload... 0%</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Judul Addon</label>
+        <input type="text" class="form-input" id="form-title" placeholder="Contoh: Flying Addon v2.0">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-input form-textarea" id="form-desc" placeholder="Deskripsi lengkap tentang addon ini..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Link Download</label>
+        <input type="url" class="form-input" id="form-dl" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Link Donasi (opsional)</label>
+        <input type="url" class="form-input" id="form-donate" placeholder="https://saweria.co/...">
+      </div>
+
+      <button class="btn btn-primary" id="upload-btn" onclick="handleUpload()" style="width:100%; height:52px; font-size:0.95rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload Addon
+      </button>
+    </div>
+
+    <!-- Addon List -->
+    <div class="admin-section">
+      <div class="admin-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        Kelola Addon
+      </div>
+      <div id="admin-addon-list">
+        <div style="text-align:center; padding: 24px; color: var(--text3); font-size: 0.85rem;">
+          <div class="spinner" style="margin: 0 auto 12px;"></div>
+          Memuat daftar addon...
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="edit-modal" id="edit-modal">
+  <div class="edit-modal-content">
+    <div class="sheet-handle" style="margin: 0 auto 8px;"></div>
+    <div class="edit-modal-title">✏️ Edit Addon</div>
+
+    <div class="form-group">
+      <label class="form-label">Judul</label>
+      <input type="text" class="form-input" id="edit-title">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Deskripsi</label>
+      <textarea class="form-input form-textarea" id="edit-desc"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Link Download</label>
+      <input type="url" class="form-input" id="edit-dl">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Link Donasi</label>
+      <input type="url" class="form-input" id="edit-donate">
+    </div>
+    <div style="display: flex; gap: 10px; margin-top: 8px;">
+      <button class="btn btn-secondary" onclick="closeEditModal()" style="flex: 1; height: 50px;">Batal</button>
+      <button class="btn btn-primary" onclick="saveEdit()" style="flex: 2; height: 50px;">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast-container"></div>
+
+<script type="module">
+import {
+  db, storage,
+  collection, addDoc, getDocs, doc, updateDoc, deleteDoc,
+  query, orderBy, serverTimestamp, onSnapshot,
+  ref, uploadBytesResumable, getDownloadURL, deleteObject
+} from './firebase.js';
+
+// ===== AUTH =====
+const ADMIN_USER = 'alfread';
+const ADMIN_PASS = 'alfread12345';
+
+const loginPage = document.getElementById('login-page');
+const dashboardPage = document.getElementById('dashboard-page');
+
+function checkAuth() {
+  const logged = sessionStorage.getItem('ax_admin');
+  if (logged === 'true') showDashboard();
+}
+
+window.handleLogin = function() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    sessionStorage.setItem('ax_admin', 'true');
+    btn.textContent = '✓ Berhasil!';
+    btn.style.opacity = '0.7';
+    setTimeout(showDashboard, 400);
+  } else {
+    errEl.style.display = 'block';
+    errEl.textContent = '❌ Username atau password salah!';
+    document.getElementById('login-pass').value = '';
+    setTimeout(() => errEl.style.display = 'none', 3000);
+  }
+};
+
+// Login on Enter
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && loginPage.style.display !== 'none') {
+    handleLogin();
+  }
+});
+
+window.handleLogout = function() {
+  sessionStorage.removeItem('ax_admin');
+  dashboardPage.style.display = 'none';
+  loginPage.style.display = 'flex';
+};
+
+function showDashboard() {
+  loginPage.style.display = 'none';
+  dashboardPage.style.display = 'block';
+  loadAdminAddons();
+}
+
+// ===== TOAST =====
+function showToast(msg, type = 'info') {
+  const tc = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  tc.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('out');
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ===== IMAGE UPLOAD =====
+let uploadedImageUrl = '';
+let selectedFile = null;
+
+const imgInput = document.getElementById('img-input');
+const imgPreview = document.getElementById('img-preview');
+const imgPlaceholder = document.getElementById('img-placeholder');
+
+imgInput?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Gambar terlalu besar! Maks 5MB', 'error'); return;
+  }
+  selectedFile = file;
+  const url = URL.createObjectURL(file);
+  imgPreview.src = url;
+  imgPreview.classList.add('visible');
+  imgPlaceholder.classList.add('hidden');
+  showToast('Gambar dipilih. Siap upload!', 'info');
+});
+
+async function uploadImage(file) {
+  return new Promise((resolve, reject) => {
+    const name = `addons/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+    const storageRef = ref(storage, name);
+    const task = uploadBytesResumable(storageRef, file);
+
+    const progressWrap = document.getElementById('upload-progress');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    progressWrap.classList.add('active');
+
+    task.on('state_changed',
+      (snapshot) => {
+        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        progressBar.style.width = pct + '%';
+        progressText.textContent = `Mengupload gambar... ${pct}%`;
+      },
+      (err) => { progressWrap.classList.remove('active'); reject(err); },
+      async () => {
+        const url = await getDownloadURL(task.snapshot.ref);
+        progressWrap.classList.remove('active');
+        resolve(url);
+      }
+    );
+  });
+}
+
+// ===== UPLOAD ADDON =====
+window.handleUpload = async function() {
+  const title = document.getElementById('form-title').value.trim();
+  const desc = document.getElementById('form-desc').value.trim();
+  const dl = document.getElementById('form-dl').value.trim();
+  const donate = document.getElementById('form-donate').value.trim();
+  const btn = document.getElementById('upload-btn');
+
+  if (!title) { showToast('Judul tidak boleh kosong!', 'error'); return; }
+  if (!desc) { showToast('Deskripsi tidak boleh kosong!', 'error'); return; }
+  if (!dl) { showToast('Link download tidak boleh kosong!', 'error'); return; }
+  if (!selectedFile) { showToast('Pilih gambar dulu!', 'error'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div> Mengupload...';
+
+  try {
+    const imageUrl = await uploadImage(selectedFile);
+    await addDoc(collection(db, 'addons'), {
+      title, description: desc, downloadUrl: dl, donateUrl: donate || '',
+      imageUrl, likes: 0, views: 0, createdAt: serverTimestamp()
+    });
+
+    showToast('✅ Addon berhasil diupload!', 'success');
+    // Reset form
+    document.getElementById('form-title').value = '';
+    document.getElementById('form-desc').value = '';
+    document.getElementById('form-dl').value = '';
+    document.getElementById('form-donate').value = '';
+    imgPreview.src = '';
+    imgPreview.classList.remove('visible');
+    imgPlaceholder.classList.remove('hidden');
+    selectedFile = null;
+    uploadedImageUrl = '';
+    imgInput.value = '';
+    loadAdminAddons();
+  } catch (err) {
+    console.error(err);
+    showToast('❌ Gagal upload: ' + err.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    Upload Addon`;
+};
+
+// ===== LOAD ADDONS =====
+let adminAddons = [];
+
+async function loadAdminAddons() {
+  const listEl = document.getElementById('admin-addon-list');
+  listEl.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text3); font-size:0.85rem;"><div class="spinner" style="margin:0 auto 12px;"></div>Memuat...</div>`;
+  try {
+    const q = query(collection(db, 'addons'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    adminAddons = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Update stats
+    const totalViews = adminAddons.reduce((a, b) => a + (b.views || 0), 0);
+    const totalLikes = adminAddons.reduce((a, b) => a + (b.likes || 0), 0);
+    document.getElementById('stat-total').textContent = adminAddons.length;
+    document.getElementById('stat-views').textContent = totalViews >= 1000 ? (totalViews/1000).toFixed(1)+'K' : totalViews;
+    document.getElementById('stat-likes').textContent = totalLikes;
+
+    if (adminAddons.length === 0) {
+      listEl.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text3); font-size:0.85rem;">Belum ada addon. Upload yang pertama!</div>`;
+      return;
+    }
+
+    listEl.innerHTML = '';
+    adminAddons.forEach(addon => {
+      const item = document.createElement('div');
+      item.className = 'admin-addon-item';
+      item.innerHTML = `
+        <img class="admin-addon-thumb" src="${addon.imageUrl || 'assets/placeholder.png'}" 
+          onerror="this.src='assets/placeholder.png'" loading="lazy">
+        <div class="admin-addon-info">
+          <div class="admin-addon-title">${escHtml(addon.title)}</div>
+          <div class="admin-addon-date">
+            👁 ${addon.views || 0} · ❤️ ${addon.likes || 0}
+          </div>
+        </div>
+        <div class="admin-addon-actions">
+          <button class="btn btn-success" onclick="openEdit('${addon.id}')">Edit</button>
+          <button class="btn btn-danger" onclick="handleDelete('${addon.id}', '${escAttr(addon.imageUrl)}')">Hapus</button>
+        </div>`;
+      listEl.appendChild(item);
+    });
+  } catch (err) {
+    listEl.innerHTML = `<div style="text-align:center; padding:24px; color:var(--danger);">Gagal memuat data.</div>`;
+    showToast('Gagal memuat addon', 'error');
+  }
+}
+
+// ===== EDIT =====
+let editingId = '';
+
+window.openEdit = function(id) {
+  editingId = id;
+  const addon = adminAddons.find(a => a.id === id);
+  if (!addon) return;
+  document.getElementById('edit-title').value = addon.title || '';
+  document.getElementById('edit-desc').value = addon.description || '';
+  document.getElementById('edit-dl').value = addon.downloadUrl || '';
+  document.getElementById('edit-donate').value = addon.donateUrl || '';
+  document.getElementById('edit-modal').classList.add('active');
+};
+
+window.closeEditModal = function() {
+  document.getElementById('edit-modal').classList.remove('active');
+  editingId = '';
+};
+
+window.saveEdit = async function() {
+  if (!editingId) return;
+  const title = document.getElementById('edit-title').value.trim();
+  const desc = document.getElementById('edit-desc').value.trim();
+  const dl = document.getElementById('edit-dl').value.trim();
+  const donate = document.getElementById('edit-donate').value.trim();
+
+  if (!title || !desc || !dl) { showToast('Isi semua field yang wajib!', 'error'); return; }
+
+  try {
+    await updateDoc(doc(db, 'addons', editingId), {
+      title, description: desc, downloadUrl: dl, donateUrl: donate
+    });
+    showToast('✅ Addon berhasil diupdate!', 'success');
+    closeEditModal();
+    loadAdminAddons();
+  } catch (err) {
+    showToast('❌ Gagal update: ' + err.message, 'error');
+  }
+};
+
+// Close modal on overlay tap
+document.getElementById('edit-modal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeEditModal();
+});
+
+// ===== DELETE =====
+window.handleDelete = async function(id, imageUrl) {
+  if (!confirm('❗ Yakin hapus addon ini?\nTindakan ini tidak bisa dibatalkan.')) return;
+  try {
+    await deleteDoc(doc(db, 'addons', id));
+    // Try to delete image from storage
+    if (imageUrl && imageUrl.includes('firebase')) {
+      try {
+        const imgRef = ref(storage, imageUrl);
+        await deleteObject(imgRef);
+      } catch (_) {}
+    }
+    showToast('🗑️ Addon berhasil dihapus!', 'success');
+    loadAdminAddons();
+  } catch (err) {
+    showToast('❌ Gagal hapus: ' + err.message, 'error');
+  }
+};
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(str) {
+  return String(str || '').replace(/'/g, "\\'");
+}
+
+// ===== INIT =====
+checkAuth();
+
+// Apply saved accent color
+const saved = localStorage.getItem('ax_accent') || '#00e5ff';
+document.documentElement.style.setProperty('--accent', saved);
+</script>
+</body>
+</html>

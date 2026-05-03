@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Alfread X Addon - Download addon Minecraft terbaik, gratis dan premium">
+  <meta name="theme-color" content="#080808">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Alfread X Addon</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Alfread X Addon">
+  <meta property="og:description" content="Download addon Minecraft terbaik gratis">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loading-screen">
+  <video id="loading-video" autoplay muted loop playsinline>
+    <source src="assets/loading.mp4" type="video/mp4">
+  </video>
+  <div class="loading-fallback" id="loading-fallback">
+    <div class="loading-logo">Alfread <span>X</span> Addon</div>
+    <div class="spinner"></div>
+    <div class="loading-progress"><div class="loading-bar"></div></div>
+  </div>
+</div>
+
+<!-- ===== OFFLINE BANNER ===== -->
+<div id="offline-banner">⚡ Tidak ada koneksi internet</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
+    <div class="nav-logo-text">Alfread <span>X</span></div>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-btn" id="open-theme" aria-label="Ganti tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main>
+  <!-- Hero Banner -->
+  <div class="hero fade-in">
+    <div class="hero-label">✦ Free Download</div>
+    <div class="hero-title">Alfread <span>X</span><br>Addon</div>
+    <div class="hero-sub">Koleksi addon Minecraft terbaik,<br>ringan dan siap pakai.</div>
+  </div>
+
+  <!-- Search Bar -->
+  <div id="search-container">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="search-input" placeholder="Cari addon..." autocomplete="off" enterkeyhint="search">
+      <button class="search-clear" id="search-clear" aria-label="Hapus pencarian">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Section Header -->
+  <div class="section-header">
+    <div class="section-title">Addon Terbaru</div>
+    <div class="section-count" id="addon-count">Memuat...</div>
+  </div>
+
+  <!-- Addon List -->
+  <div id="addon-list"></div>
+
+  <!-- Load More -->
+  <button id="load-more-btn" class="hidden">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="1 4 1 10 7 10"/>
+      <path d="M3.51 15a9 9 0 1 0 .49-4.97"/>
+    </svg>
+    Muat Lebih Banyak
+  </button>
+
+  <!-- Footer -->
+  <footer style="padding: 32px 20px 16px; text-align: center; border-top: 1px solid var(--border); margin-top: 24px;">
+    <div style="font-size: 1rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.3px;">
+      Alfread <span style="color: var(--accent);">X</span> Addon
+    </div>
+    <div style="font-size: 0.75rem; color: var(--text3); margin-bottom: 20px;">
+      Minecraft Addon Hub
+    </div>
+    <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+      <!-- WhatsApp -->
+      <a href="https://wa.me/60136951175" target="_blank" style="color: var(--text2); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg3); border-radius: 10px; border: 1px solid var(--border);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.895 6.996c-.002 5.45-4.437 9.882-9.887 9.882zm6.487-16.375A10.058 10.058 0 0012.046 2C6.5 2 2.002 6.5 2.002 12.047c0 1.776.464 3.517 1.348 5.052L2 22l5.062-1.328a10.05 10.05 0 004.98 1.272h.004c5.546 0 10.045-4.501 10.045-10.048a9.98 9.98 0 00-3.033-7.138z"/>
+        </svg>
+        WhatsApp
+      </a>
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@allfreadd?_r=1&_d=f10lb3bl50mf4j&sec_uid=MS4wLjABAAAA9bAjMWJiqV5KJhoWpiFcKjk7CvbFaFY_X0AnmzTbMQp1CERZVhSU5HLzGQeXWr-g&share_author_id=7583358650928907281&sharer_language=id&source=h5_t&u_code=f10lfkgi9hia83&timestamp=1777806690&user_id=7583358650928907281&sec_user_id=MS4wLjABAAAA9bAjMWJiqV5KJhoWpiFcKjk7CvbFaFY_X0AnmzTbMQp1CERZVhSU5HLzGQeXWr-g&item_author_type=1&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7634120295540541204&share_link_id=a02ee8fd-611a-4d30-8917-357fb099210c&share_app_id=1180&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank" style="color: var(--text2); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg3); border-radius: 10px; border: 1px solid var(--border);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+        TikTok
+      </a>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/eiixyy_?igsh=MXNxdHY0MjM5eHUwNw==" target="_blank" style="color: var(--text2); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg3); border-radius: 10px; border: 1px solid var(--border);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+        Instagram
+      </a>
+      <!-- YouTube -->
+      <a href="https://youtube.com/" target="_blank" style="color: var(--text2); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg3); border-radius: 10px; border: 1px solid var(--border);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        YouTube
+      </a>
+    </div>
+    <div style="font-size: 0.72rem; color: var(--text3);">© 2025 Alfread X Addon. All rights reserved.</div>
+  </footer>
+</main>
+
+<!-- ===== BOTTOM NAVIGATION ===== -->
+<nav id="bottom-nav">
+  <button class="bottom-nav-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    <span>Home</span>
+  </button>
+  <button class="bottom-nav-item" onclick="document.getElementById('search-input').focus()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <span>Cari</span>
+  </button>
+  <button class="bottom-nav-item" onclick="document.getElementById('open-theme').click()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+    </svg>
+    <span>Tema</span>
+  </button>
+  <a class="bottom-nav-item" href="admin.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span>Admin</span>
+  </a>
+</nav>
+
+<!-- ===== DETAIL BOTTOM SHEET ===== -->
+<div id="modal-overlay"></div>
+
+<div id="detail-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-content">
+    <div class="sheet-img-wrap">
+      <img id="sheet-img" src="" alt="Addon" loading="lazy">
+    </div>
+    <div class="sheet-body">
+      <h2 class="sheet-title" id="sheet-title"></h2>
+      <div class="sheet-meta">
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span id="sheet-views">0</span>
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span id="sheet-likes">0</span>
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span id="sheet-date"></span>
+        </div>
+      </div>
+      <div class="sheet-desc collapsed" id="sheet-desc"></div>
+      <span class="toggle-desc" id="toggle-desc">Baca Selengkapnya ↓</span>
+
+      <div class="sheet-actions">
+        <button class="btn btn-primary" id="sheet-dl" style="height:52px; font-size: 0.95rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download Addon
+        </button>
+        <button class="btn btn-secondary" id="sheet-donate" style="height:52px; font-size: 0.95rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          Support / Donate
+        </button>
+      </div>
+
+      <!-- Share -->
+      <div style="text-align:center; font-size:0.78rem; color: var(--text3); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;">Bagikan</div>
+      <div class="share-row">
+        <!-- WhatsApp Share -->
+        <a id="share-wa" class="share-btn share-wa" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.895 6.996c-.002 5.45-4.437 9.882-9.887 9.882zm6.487-16.375A10.058 10.058 0 0012.046 2C6.5 2 2.002 6.5 2.002 12.047c0 1.776.464 3.517 1.348 5.052L2 22l5.062-1.328a10.05 10.05 0 004.98 1.272h.004c5.546 0 10.045-4.501 10.045-10.048a9.98 9.98 0 00-3.033-7.138z"/>
+          </svg>
+        </a>
+        <!-- Instagram Share -->
+        <a id="share-ig" class="share-btn share-ig" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+        </a>
+        <!-- Telegram Share -->
+        <a id="share-tg" class="share-btn share-tg" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.441-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.119.098.152.228.168.335.017.107.038.348.021.538z"/>
+          </svg>
+        </a>
+        <button id="share-copy" class="share-btn share-copy">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== THEME SHEET ===== -->
+<div id="theme-sheet">
+  <div class="sheet-handle" style="margin: 0 auto 0;"></div>
+  <div class="theme-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+    </svg>
+    Pilih Warna Aksen
+  </div>
+  <div class="color-grid" id="color-grid">
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+    <div class="color-swatch"></div>
+  </div>
+  <div class="custom-color-row">
+    <span class="custom-color-label">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+      Warna custom
+    </span>
+    <input type="color" id="custom-color" value="#00e5ff">
+  </div>
+  <button id="close-theme" class="btn btn-secondary" style="width:100%; margin-top: 20px;">Tutup</button>
+</div>
+
+<!-- ===== SCROLL TO TOP ===== -->
+<button id="scroll-top" aria-label="Scroll ke atas">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<!-- ===== TOAST ===== -->
+<div id="toast-container"></div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module" src="script.js"></script>
+</body>
+</html>
